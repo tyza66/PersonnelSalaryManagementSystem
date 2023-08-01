@@ -57,4 +57,5 @@ public class UserSalaryServiceImpl extends ServiceImpl<UserSalaryMapper, UserSal
         userSalaryQueryWrapper.like("name", username);
         return baseMapper.selectList(userSalaryQueryWrapper);
     }
+
 }

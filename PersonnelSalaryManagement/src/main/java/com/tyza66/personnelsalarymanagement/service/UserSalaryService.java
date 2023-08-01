@@ -29,4 +29,5 @@ public interface UserSalaryService {
 
     //通过用户名查询员工工资信息
     List<UserSalary> getUserSalaryByUsername(String username);
+
 }
