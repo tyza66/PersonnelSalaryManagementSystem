@@ -14,10 +14,10 @@
           <el-table-column fixed prop="salary" label="薪资" width="200">
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="132">
-            <span slot-scope="scope">
-              <el-button type="text" size="small">编辑</el-button>
-              <el-button type="text" size="small">删除</el-button>
-            </span>
+            <template v-slot="scope">
+              <el-button type="text" size="small" @click="openEdit()">编辑</el-button>
+              <el-button type="text" size="small" @click="delete1(scope.row.id)">删除</el-button>
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -25,23 +25,40 @@
         <h2 style="text-align:center;margin-top:10px;margin-buttom:10px;">可执行的操作</h2>
         <div>
           <h3 style="text-align:center;">分页操作</h3>
+          <el-button type="default" @click="prePage()">上一页</el-button>
+          <span>共{{ pageCount }}页，当前第{{ now }}页</span>
+          <el-button type="default" @click="nextPage()">下一页</el-button>
         </div>
         <div>
           <h3 style="text-align:center;">表单操作</h3>
+          <el-button type="primary" @click="getFirstPage()">刷新表单</el-button>
+          <el-button type="primary">添加信息</el-button>
+          <el-input style="margin-top: 20px;" v-model="search" placeholder="在此输入搜索条件"></el-input>
+          <el-button type="primary" @click="searchByName()">按姓名查询</el-button>
+          <el-button type="primary" @click="searchByID()">按ID查询</el-button>
         </div>
       </div>
     </div>
+
+    <el-dialog title="添加薪资记录" :visible.sync="editDialogVisible" width="30%" :before-close="handleClose">
+      <span>这是一段信息</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editDialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <style>
 .manage-table {
   width: 930px;
+  margin-top: 45px;
 }
 
 .manage-control {
   width: 400px;
-  height: 500px;
+  height: 460px;
   background-color: #efefef;
   position: fixed;
   right: 0;
@@ -50,10 +67,23 @@
   display: flex;
   flex-direction: column;
 }
+
+.manage-control div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.manage-control div button {
+  margin-left: 0 !important;
+  margin: 5px 10px;
+  width: 80%;
+}
 </style>
 
 <script>
 import { request } from '@/utils/request';
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default {
   name: 'ManageView',
@@ -68,7 +98,23 @@ export default {
         "year": "1",
         "month": "1",
         "salary": "1",
-      }]
+      }],
+      pageCount: 0,
+      now: 1,
+      search: '',
+      editForm: {
+        "id": "",
+        "name": "",
+        "year": "",
+        "month": "",
+        "salary": "",
+      }, addForm: {
+        "name": "",
+        "year": "",
+        "month": "",
+        "salary": "",
+      },
+      editDialogVisible: true
     }
   },
   created() {
@@ -129,20 +175,131 @@ export default {
       }
       // 如果没有找到指定的cookie键，则返回null或任何你指定的默认值  
       return null;
-    },getFirstPage(){
-      request.get("/salary/list",{
-        params:{
-          "page":1,
-          "limit":10
+    }, getFirstPage() {
+      this.now = 1
+      request.get("/salary/list", {
+        params: {
+          "page": 1,
+          "limit": 10
         },
         headers: {
           "satoken": this.getCookie("satoken")
         }
-      }).then(res=>{
+      }).then(res => {
         this.tableData = res.data
-      }).catch(err=>{
+        this.pageCount = res.count
+      }).catch(err => {
         console.log(err)
       })
+    }, getPage(page, limit) {
+      request.get("/salary/list", {
+        params: {
+          "page": page,
+          "limit": limit
+        },
+        headers: {
+          "satoken": this.getCookie("satoken")
+        }
+      }).then(res => {
+        this.tableData = res.data
+        this.pageCount = res.count
+      }).catch(err => {
+        console.log(err)
+      })
+    }, nextPage() {
+      if (this.now < this.pageCount) {
+        this.now++
+        this.getPage(this.now, 10)
+      } else {
+        this.$message({
+          message: '已经是最后一页了',
+          type: 'warning'
+        });
+      }
+    }, prePage() {
+      if (this.now > 1) {
+        this.now--
+        this.getPage(this.now, 10)
+      } else {
+        this.$message({
+          message: '已经是第一页了',
+          type: 'warning'
+        });
+      }
+    }, searchByName() {
+      request.get("/salary/getByUsername", {
+        params: {
+          "username": this.search
+        },
+        headers: {
+          "satoken": this.getCookie("satoken")
+        }
+      }).then(res => {
+        this.tableData = res.data
+        this.pageCount = 1
+        this.now = 1
+      }).catch(err => {
+        console.log(err)
+      })
+    }, searchByID() {
+      request.get("/salary/getById", {
+        params: {
+          "id": this.search
+        },
+        headers: {
+          "satoken": this.getCookie("satoken")
+        }
+      }).then(res => {
+        this.tableData = []
+        this.tableData[0] = res.data
+        this.pageCount = 1
+        this.now = 1
+      }).catch(err => {
+        console.log(err)
+      })
+    }, delete1(id) {
+      console.log(id)
+      ElMessageBox.confirm(
+        '确定要删除吗?',
+        '删除',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      )
+        .then(() => {
+          request.post("/salary/delete", {
+            "id": id
+          }, {
+            headers: {
+              "satoken": this.getCookie("satoken")
+            }
+          }).then(res => {
+            this.$message({
+              type: 'success',
+              message: '删除成功!',
+            })
+            this.getFirstPage()
+          }).catch(err => {
+            console.log(err)
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除',
+          })
+        })
+    }, handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done();
+        })
+        .catch(_ => { });
+    },
+    openEdit() {
+      this.editDialogVisible = true
     }
   }
 }

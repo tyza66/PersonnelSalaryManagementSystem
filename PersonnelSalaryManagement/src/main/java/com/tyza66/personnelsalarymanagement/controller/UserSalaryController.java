@@ -67,10 +67,10 @@ public class UserSalaryController {
 
     @ApiOperation("删除员工薪资信息")
     @PostMapping("/delete")
-    public JSON delete(@ApiParam("员工薪资信息id") @RequestParam Integer id) {
+    public JSON delete(@ApiParam("员工薪资信息id") @RequestBody UserSalary userSalary) {
         JSONObject obj = JSONUtil.createObj();
         if (StpUtil.isLogin()) {
-            Boolean aBoolean = userSalaryService.deleteUserSalary(id);
+            Boolean aBoolean = userSalaryService.deleteUserSalary(userSalary.getId());
             if (aBoolean) {
                 obj.put("code", 200);
                 obj.put("msg", "删除成功");
