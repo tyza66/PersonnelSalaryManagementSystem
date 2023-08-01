@@ -24,4 +24,16 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         Admin admin = getOne(adminQueryWrapper);
         return admin != null;
     }
+
+    @Override
+    public Boolean register(String username, String password) {
+        QueryWrapper<Admin> adminQueryWrapper = new QueryWrapper<>();
+        adminQueryWrapper.eq("username", username);
+        if (baseMapper.exists(adminQueryWrapper)) {
+            return false;
+        } else {
+            Admin admin = new Admin(0, username, SecureUtil.sha1(password));
+            return save(admin);
+        }
+    }
 }

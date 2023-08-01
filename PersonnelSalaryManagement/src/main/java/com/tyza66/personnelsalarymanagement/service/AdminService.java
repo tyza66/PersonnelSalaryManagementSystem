@@ -12,4 +12,7 @@ public interface AdminService {
 
     //使用用户名和密码登录
     Boolean login(String username, String password);
+
+    //通过用户名和密码注册账号
+    Boolean register(String username, String password);
 }
