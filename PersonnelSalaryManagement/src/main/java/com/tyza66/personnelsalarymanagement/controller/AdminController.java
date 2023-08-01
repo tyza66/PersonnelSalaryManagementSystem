@@ -9,10 +9,7 @@ import com.tyza66.personnelsalarymanagement.service.AdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Author: tyza66
@@ -69,5 +66,18 @@ public class AdminController {
         return obj;
     }
 
-
+    @ApiOperation("检查当前登录状态")
+    @GetMapping("/check")
+    public JSON check() {
+        JSONObject obj = JSONUtil.createObj();
+        if (StpUtil.isLogin()) {
+            obj.put("code", 200);
+            obj.put("msg", "已登录");
+            obj.put("username", StpUtil.getSession().get("username"));
+        } else {
+            obj.put("code", 201);
+            obj.put("msg", "未登录");
+        }
+        return obj;
+    }
 }
