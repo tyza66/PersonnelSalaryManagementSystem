@@ -37,6 +37,7 @@ public class UserSalaryController {
             obj.put("code", 200);
             obj.put("msg", "查询成功");
             obj.put("data", userSalaryService.getUserSalary(page, limit));
+            obj.put("count", userSalaryService.getPages(page, limit));
         } else {
             obj.put("code", 201);
             obj.put("msg", "未登录");

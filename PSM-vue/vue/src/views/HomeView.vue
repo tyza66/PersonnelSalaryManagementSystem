@@ -5,9 +5,24 @@
       <div class="home-main">
         在这里可以展示各种公示和主页信息<br/>
         当前登陆状态：{{ status }}<br/>
+
+        <br/>
+        vue版本：
         <el-button @click="goManage()">前往管理界面</el-button>
         <el-button @click="goLogin()">前往登录界面</el-button>
         <el-button @click="goRegister()">前往注册界面</el-button>
+
+        <br/><br/>
+        jsp版本：
+        <el-button @click="goManage()">前往管理界面</el-button>
+        <el-button @click="goLogin()">前往登录界面</el-button>
+        <el-button @click="goRegister()">前往注册界面</el-button>
+
+        <br/><br/>
+        其他操作：
+        <el-button @click="logout()">退出登录</el-button>
+
+
       </div>
     </div>
   </div>
@@ -97,6 +112,25 @@ export default {
     },
     goRegister(){
       this.$router.push('/register');
+    },
+    logout(){
+      request.get("/admin/logout",{
+        headers: {
+          "satoken": this.getCookie("satoken")
+        }
+      }).then(res => {
+        if (res.code == 200) {
+          this.setCookie("satoken", "");
+          this.status = "未登录"
+          this.$message({
+            message: '退出登录成功',
+            type: 'success'
+          });
+        }
+      }).catch(err => {
+        console.log(err)
+      });
+      
     }
   }
 }

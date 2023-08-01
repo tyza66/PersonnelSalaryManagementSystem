@@ -34,6 +34,7 @@ public class AdminController {
             obj.put("msg", "登录成功");
             StpUtil.login(0);
             StpUtil.getSession().set("username", admin.getUsername());
+            obj.put("token", StpUtil.getTokenValue());
         } else {
             obj.put("code", 400);
             obj.put("msg", "登录失败");
@@ -42,7 +43,7 @@ public class AdminController {
     }
 
     @ApiOperation("管理员退出登录")
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public JSON logout() {
         JSONObject obj = JSONUtil.createObj();
         StpUtil.logout();
@@ -61,7 +62,7 @@ public class AdminController {
             obj.put("msg", "注册成功");
         } else {
             obj.put("code", 400);
-            obj.put("msg", "注册失败");
+            obj.put("msg", "注册失败,可能用户名已存在");
         }
         return obj;
     }

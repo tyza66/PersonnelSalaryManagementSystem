@@ -9,7 +9,7 @@
         <el-input class="register-input" type="password" v-model="password" placeholder="在此输入用户密码"></el-input>
       </el-form-item>
       <el-form-item class="register-control">
-        <el-button type="primary">注册</el-button>
+        <el-button type="primary" @click="register()">注册</el-button>
         <el-button type="default" @click="goLogin()">登录</el-button>
       </el-form-item>
     </div>
@@ -56,6 +56,27 @@ export default {
   methods: {
       goLogin() {
         this.$router.push('/login');
+      },
+      register(){
+        request.post("/admin/register", {
+          username: this.username,
+          password: this.password
+        }).then(res => {
+          if (res.code == 200) {
+            this.$message({
+              message: '注册成功，一秒后跳转到登录界面',
+              type: 'success'
+            });
+            setTimeout(() => {
+              this.$router.push('/login');
+            }, 1000);
+          } else {
+            this.$message({
+              message: res.msg,
+              type: 'error'
+            });
+          }
+        });
       }
   }
 }

@@ -15,6 +15,9 @@ public interface UserSalaryService {
     //分页查询所有用户工资信息
     List<UserSalary> getUserSalary(int page, int size);
 
+    //获得页数
+    int getPages(int page, int size);
+
     //增加员工工资信息
     Boolean addUserSalary(UserSalary userSalary);
 

@@ -9,7 +9,7 @@
         <el-input class="login-input" type="password" v-model="password" placeholder="在此输入用户密码"></el-input>
       </el-form-item>
       <el-form-item class="login-control">
-        <el-button type="primary">登录</el-button>
+        <el-button type="primary" @click="login()">登录</el-button>
         <el-button type="default" @click="goRegister()">注册</el-button>
       </el-form-item>
     </div>
@@ -92,6 +92,30 @@ export default {
       }
       // 如果没有找到指定的cookie键，则返回null或任何你指定的默认值  
       return null;
+    },
+    login(){
+      request.post("/admin/login", {
+        username: this.username,
+        password: this.password
+      }).then(res => {
+        if (res.code == 200) {
+          this.setCookie("satoken", res.token);
+          this.$message({
+            message: '登录成功，一秒后跳转到管理界面',
+            type: 'success'
+          });
+          setTimeout(() => {
+            this.$router.push('/manage');
+          }, 1000)
+        } else {
+          this.$message({
+            message: res.msg,
+            type: 'error'
+          });
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }

@@ -31,6 +31,16 @@ public class UserSalaryServiceImpl extends ServiceImpl<UserSalaryMapper, UserSal
     }
 
     @Override
+    public int getPages(int page, int size) {
+        QueryWrapper<UserSalary> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("name");
+        queryWrapper.orderByDesc("year");
+        queryWrapper.orderByDesc("month");
+        IPage<UserSalary> end = baseMapper.selectPage(new Page<>(page, size), queryWrapper);
+        return (int) end.getPages();
+    }
+
+    @Override
     public Boolean addUserSalary(UserSalary userSalary) {
         userSalary.setId(0);
         return baseMapper.insert(userSalary)>=1;

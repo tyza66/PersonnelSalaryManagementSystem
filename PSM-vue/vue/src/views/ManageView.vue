@@ -1,7 +1,7 @@
 <template>
   <div class="home" style="width: 100%;padding: 10px">
     <div>
-      <div>
+      <div class="manage-table">
         <el-table :data="tableData" border style="width: 100%">
           <el-table-column fixed prop="id" label="ID" width="150">
           </el-table-column>
@@ -11,19 +11,46 @@
           </el-table-column>
           <el-table-column fixed prop="month" label="月日期" width="150">
           </el-table-column>
-          <el-table-column fixed prop="salary" label="薪资" width="150">
+          <el-table-column fixed prop="salary" label="薪资" width="200">
           </el-table-column>
-          <el-table-column fixed="right" label="操作" width="100">
-            <template slot-scope="scope">
-              <el-button type="text" size="small">查看</el-button>
+          <el-table-column fixed="right" label="操作" width="132">
+            <span slot-scope="scope">
               <el-button type="text" size="small">编辑</el-button>
-            </template>
+              <el-button type="text" size="small">删除</el-button>
+            </span>
           </el-table-column>
         </el-table>
+      </div>
+      <div class="manage-control">
+        <h2 style="text-align:center;margin-top:10px;margin-buttom:10px;">可执行的操作</h2>
+        <div>
+          <h3 style="text-align:center;">分页操作</h3>
+        </div>
+        <div>
+          <h3 style="text-align:center;">表单操作</h3>
+        </div>
       </div>
     </div>
   </div>
 </template>
+
+<style>
+.manage-table {
+  width: 930px;
+}
+
+.manage-control {
+  width: 400px;
+  height: 500px;
+  background-color: #efefef;
+  position: fixed;
+  right: 0;
+  top: 100px;
+  border-radius: 10px 0 0 10px;
+  display: flex;
+  flex-direction: column;
+}
+</style>
 
 <script>
 import { request } from '@/utils/request';
@@ -46,6 +73,7 @@ export default {
   },
   created() {
     this.checkLogin();
+    this.getFirstPage();
   },
   methods: {
     checkLogin() {
@@ -101,6 +129,20 @@ export default {
       }
       // 如果没有找到指定的cookie键，则返回null或任何你指定的默认值  
       return null;
+    },getFirstPage(){
+      request.get("/salary/list",{
+        params:{
+          "page":1,
+          "limit":10
+        },
+        headers: {
+          "satoken": this.getCookie("satoken")
+        }
+      }).then(res=>{
+        this.tableData = res.data
+      }).catch(err=>{
+        console.log(err)
+      })
     }
   }
 }
