@@ -23,8 +23,9 @@ public class UserSalaryServiceImpl extends ServiceImpl<UserSalaryMapper, UserSal
     @Override
     public List<UserSalary> getUserSalary(int page, int size) {
         QueryWrapper<UserSalary> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("owner", "admin");
-        queryWrapper.orderByDesc("last");
+        queryWrapper.orderByDesc("name");
+        queryWrapper.orderByDesc("year");
+        queryWrapper.orderByDesc("month");
         IPage<UserSalary> end = baseMapper.selectPage(new Page<>(page, size), queryWrapper);
         return end.getRecords();
     }
@@ -53,7 +54,7 @@ public class UserSalaryServiceImpl extends ServiceImpl<UserSalaryMapper, UserSal
     @Override
     public List<UserSalary> getUserSalaryByUsername(String username) {
         QueryWrapper<UserSalary> userSalaryQueryWrapper = new QueryWrapper<>();
-        userSalaryQueryWrapper.like("username", username);
+        userSalaryQueryWrapper.like("name", username);
         return baseMapper.selectList(userSalaryQueryWrapper);
     }
 }
