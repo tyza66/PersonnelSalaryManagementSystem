@@ -135,13 +135,43 @@ public class UserSalaryController {
         return obj;
     }
 
-    @ApiOperation("通过用户名查询员工薪资信息")
+    @ApiOperation("通过姓名查询员工薪资信息")
     @GetMapping("/searchByName")
     public JSON searchByName(@RequestParam String username) {
         JSONObject obj = JSONUtil.createObj();
         obj.put("code", 200);
         obj.put("msg", "查询成功");
         obj.put("data", userSalaryService.getSumSalaryByUsername(username));
+        return obj;
+    }
+
+    @ApiOperation("通过姓名和年份查找员工工资信息")
+    @GetMapping("/searchByNameAndYear")
+    public JSON searchByNameAndYear(@RequestParam String username, @RequestParam Integer year) {
+        JSONObject obj = JSONUtil.createObj();
+        obj.put("code", 200);
+        obj.put("msg", "查询成功");
+        obj.put("data", userSalaryService.getSumSalaryByUsernameAndYear(username, year));
+        return obj;
+    }
+
+    @ApiOperation("通过姓名和月份查找员工工资信息")
+    @GetMapping("/searchByNameAndMonth")
+    public JSON searchByNameAndYearAndMonth(@RequestParam String username, @RequestParam Integer month) {
+        JSONObject obj = JSONUtil.createObj();
+        obj.put("code", 200);
+        obj.put("msg", "查询成功");
+        obj.put("data", userSalaryService.getSumSalaryByUsernameAndMonth(username, month));
+        return obj;
+    }
+
+    @ApiOperation("通过姓名和年份和月份查找员工工资信息")
+    @GetMapping("/searchByNameAndYearAndMonthAndDay")
+    public JSON searchByNameAndYearAndMonthAndDay(@RequestParam String username, @RequestParam Integer year, @RequestParam Integer month) {
+        JSONObject obj = JSONUtil.createObj();
+        obj.put("code", 200);
+        obj.put("msg", "查询成功");
+        obj.put("data", userSalaryService.getSalaryByUsernameAndYearAndMonth(username, year, month));
         return obj;
     }
 
