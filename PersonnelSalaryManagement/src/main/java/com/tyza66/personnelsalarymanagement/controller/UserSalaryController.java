@@ -166,7 +166,7 @@ public class UserSalaryController {
     }
 
     @ApiOperation("通过姓名和年份和月份查找员工工资信息")
-    @GetMapping("/searchByNameAndYearAndMonthAndDay")
+    @GetMapping("/searchByNameAndYearAndMonth")
     public JSON searchByNameAndYearAndMonthAndDay(@RequestParam String username, @RequestParam Integer year, @RequestParam Integer month) {
         JSONObject obj = JSONUtil.createObj();
         obj.put("code", 200);

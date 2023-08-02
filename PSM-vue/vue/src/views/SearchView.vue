@@ -4,7 +4,6 @@
       <h2 class="search-title">员工薪资查询</h2>
       <h4></h4>
       <el-form-item label="姓名">
-
         <el-input class="search-input" type="text" v-model="name" placeholder="在此输入用户名"></el-input><br />
       </el-form-item>
       <el-form-item label="年份">
@@ -74,6 +73,56 @@ export default {
   methods: {
     goLogin() {
       this.$router.push('/login');
+    },search(){
+      if(!this.year_open && !this.month_open){
+        // 只有姓名
+        request.get("/salary/searchByName",{
+          params:{
+            "username":this.name
+          }
+        }).then(res=>{
+          this.out = "您被统计过的全部工资总和有"+res.data+"元";
+        }).catch(err=>{
+          console.log(err);
+        })
+      }else if(this.year_open && !this.month_open){
+        // 姓名+年份
+        request.get("/salary/searchByNameAndYear",{
+          params:{
+            "username":this.name,
+            "year":this.year
+          }
+        }).then(res=>{
+          this.out = "您"+this.year+"年被统计过的全部工资总和有"+res.data+"元";
+        }).catch(err=>{
+          console.log(err);
+        })
+      }else if(!this.year_open && this.month_open){
+        // 姓名+月份
+        request.get("/salary/searchByNameAndMonth",{
+          params:{
+            "username":this.name,
+            "month":this.month
+          }
+        }).then(res=>{
+          this.out = "您每年的"+this.month+"月被统计过的全部工资总和有"+res.data+"元";
+        }).catch(err=>{
+          console.log(err);
+        })
+      }else if(this.year_open && this.month_open){
+        // 姓名+年份+月份
+        request.get("/salary/searchByNameAndYearAndMonth",{
+          params:{
+            "username":this.name,
+            "year":this.year,
+            "month":this.month
+          }
+        }).then(res=>{
+          this.out = "您"+this.year+"年的"+this.month+"月被统计过的全部工资总和有"+res.data+"元";
+        }).catch(err=>{
+          console.log(err);
+        })
+      }
     }
   }
 }
