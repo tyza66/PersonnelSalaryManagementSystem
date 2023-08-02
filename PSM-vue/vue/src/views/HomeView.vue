@@ -15,7 +15,7 @@
 
         <br/><br/>
         jsp版本：
-        <el-button @click="goSearch()">门户</el-button>
+        <el-button @click="goJspHome()">前往门户导航</el-button>
         <el-button @click="goManage()">前往管理界面</el-button>
         <el-button @click="goLogin()">前往登录界面</el-button>
         <el-button @click="goRegister()">前往注册界面</el-button>
@@ -135,7 +135,9 @@ export default {
       });
     },goSearch(){
       this.$router.push('/search');
-    } 
+    },goJspHome(){
+      window.location.href = "http://localhost:9090";
+    }
   }
 }
 </script>
