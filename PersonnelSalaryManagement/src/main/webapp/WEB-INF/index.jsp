@@ -101,18 +101,22 @@
                     }
                 })
             },goManage(){
-                window.location.href = "http://localhost:9090/manage.jsp";
+                window.location.href = "http://localhost:9090/manage";
             },goLogin(){
-                window.location.href = "http://localhost:9090/login.jsp";
+                window.location.href = "http://localhost:9090/login";
             },goRegister(){
-                window.location.href = "http://localhost:9090/register.jsp";
+                window.location.href = "http://localhost:9090/register";
             },goSearch(){
-                window.location.href = "http://localhost:9090/search.jsp";
+                window.location.href = "http://localhost:9090/search";
             },logout(){
+                var that = this;
                 axios.get("/admin/logout").then(res=>{
                     if(res.data.code==200){
-                        alert("退出成功");
-                        window.location.href = "http://localhost:9090";
+                        this.$message({
+                            message: '退出成功',
+                            type: 'success'
+                        });
+                        that.status = "未登录";
                     }else{
                         alert("退出失败");
                     }

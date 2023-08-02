@@ -2,7 +2,7 @@
   Created by IntelliJ IDEA.
   User: tyza66
   Date: 2023/8/2
-  Time: 10:36
+  Time: 11:13
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -21,26 +21,22 @@
             padding: 0;
         }
 
-        .login-title {
+        .register-title {
             text-align: center;
             margin-bottom: 50px;
         }
 
-        .login-input {
+        .register-input {
             display: block;
             width: 280px !important;
         }
 
-        .login {
+        .register {
             width: 350px;
             margin: 0 auto;
         }
 
-        .login-control {
-            margin-top: 10px;
-        }
-
-        .login-control button {
+        .register-control button {
             margin: 0 auto;
         }
 
@@ -62,21 +58,21 @@
         </div>
     </div>
     <div class="home" style="width: 100%;padding: 10px">
-        <div class="login">
-            <h2 class="login-title">管理员登录</h2>
+        <div class="register">
+            <h2 class="register-title">管理员注册</h2>
             <el-form>
                 <el-form-item label="账号">
-                    <el-input class="login-input" type="text" v-model="username"
+                    <el-input class="register-input" type="text" v-model="username"
                               placeholder="在此输入用户名"></el-input>
                     <br/>
                 </el-form-item>
                 <el-form-item label="密码">
-                    <el-input class="login-input" type="password" v-model="password"
+                    <el-input class="register-input" type="password" v-model="password"
                               placeholder="在此输入用户密码"></el-input>
                 </el-form-item>
-                <el-form-item class="login-control">
-                    <el-button type="primary" @click="login()">登录</el-button>
-                    <el-button type="default" @click="goRegister()">注册</el-button>
+                <el-form-item class="register-control">
+                    <el-button type="primary" @click="register()">注册</el-button>
+                    <el-button type="default" @click="goLogin()">登录</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -90,32 +86,32 @@
             password: ''
         },
         methods: {
-            login() {
+            register() {
                 var that = this;
-                axios.post('admin/login', {
+                axios.post('admin/register', {
                     username: this.username,
                     password: this.password
                 }).then(function (response) {
-                    if (response.data.code == 200) {
+                    if (response.data.code === 200) {
                         that.$message({
-                            message: "登录成功，一秒后将会跳转到管理页面",
+                            message: "注册成功，一秒后将会跳转到登录页面",
                             type: 'success'
                         })
                         setTimeout(()=>{
-                            window.location.href = 'http://localhost:9090/manage';
+                            window.location.href = "http://localhost:9090/login";
                         },1000)
                     } else {
                         that.$message({
                             message: response.data.msg,
                             type: 'error'
-                        });
+                        })
                     }
                 }).catch(function (error) {
                     console.log(error);
                 });
             },
-            goRegister() {
-                window.location.href = 'http://localhost:9090/register';
+            goLogin() {
+                window.location.href = "http://localhost:9090/login";
             }
         }
     })
