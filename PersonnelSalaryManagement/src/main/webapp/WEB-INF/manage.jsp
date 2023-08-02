@@ -200,7 +200,7 @@
                             type: 'warning'
                         });
                         setTimeout(() => {
-                            this.$router.push('/login');
+                            window.location.href = "/login"
                         }, 1000)
                     }
                 }).catch(err => {
