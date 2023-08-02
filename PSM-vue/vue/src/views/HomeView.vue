@@ -11,12 +11,14 @@
         <el-button @click="goManage()">前往管理界面</el-button>
         <el-button @click="goLogin()">前往登录界面</el-button>
         <el-button @click="goRegister()">前往注册界面</el-button>
+        <el-button @click="goSearch()">前往员工查工资界面</el-button>
 
         <br/><br/>
         jsp版本：
         <el-button @click="goManage()">前往管理界面</el-button>
         <el-button @click="goLogin()">前往登录界面</el-button>
         <el-button @click="goRegister()">前往注册界面</el-button>
+        <el-button @click="goSearch()">前往员工查工资界面</el-button>
 
         <br/><br/>
         其他操作：
@@ -130,8 +132,9 @@ export default {
       }).catch(err => {
         console.log(err)
       });
-      
-    }
+    },goSearch(){
+      this.$router.push('/search');
+    } 
   }
 }
 </script>

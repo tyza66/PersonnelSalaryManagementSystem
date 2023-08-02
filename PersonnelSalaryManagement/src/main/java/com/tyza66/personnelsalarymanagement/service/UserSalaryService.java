@@ -2,6 +2,7 @@ package com.tyza66.personnelsalarymanagement.service;
 
 import com.tyza66.personnelsalarymanagement.pojo.UserSalary;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -33,4 +34,15 @@ public interface UserSalaryService {
     //通过用户名查询员工工资信息
     List<UserSalary> getUserSalaryByUsername(String username);
 
+    //查找一个姓名下的工资总和
+    BigDecimal getSumSalaryByUsername(String username);
+
+    //查找一个姓名在一个月份的工资总和
+    BigDecimal getSumSalaryByUsernameAndMonth(String username, Integer month);
+
+    //查找一个姓名在一个年份的工资总和
+    BigDecimal getSumSalaryByUsernameAndYear(String username, Integer year);
+
+    //查找一个姓名在某一年某一个月份的工资
+    BigDecimal getSalaryByUsernameAndYearAndMonth(String username, Integer year, Integer month);
 }

@@ -1,5 +1,45 @@
 <template>
   <div class="home" style="width: 100%;padding: 10px">
+    <el-dialog title="编辑" v-model="editDialogVisible" width="30%" :before-close="handleClose">
+      <div>
+        <el-form-item label="姓名">
+          <el-input v-model="editForm.name" placeholder="姓名"></el-input>
+        </el-form-item>
+        <el-form-item label="年份">
+          <el-input v-model="editForm.year" placeholder="年时间" type="number"></el-input>
+        </el-form-item>
+        <el-form-item label="月份">
+          <el-input v-model="editForm.month" placeholder="月时间" type="number"></el-input>
+        </el-form-item>
+        <el-form-item label="薪资">
+          <el-input v-model="editForm.salary" placeholder="薪资" type="number"></el-input>
+        </el-form-item>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updateSalary()">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog title="添加" v-model="addDialogVisible" width="30%" :before-close="handleClose">
+      <div>
+        <el-form-item label="姓名">
+          <el-input v-model="addForm.name" placeholder="姓名"></el-input>
+        </el-form-item>
+        <el-form-item label="年份">
+          <el-input v-model="addForm.year" placeholder="年时间" type="number"></el-input>
+        </el-form-item>
+        <el-form-item label="月份">
+          <el-input v-model="addForm.month" placeholder="月时间" type="number"></el-input>
+        </el-form-item>
+        <el-form-item label="薪资">
+          <el-input v-model="addForm.salary" placeholder="薪资" type="number"></el-input>
+        </el-form-item>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addSalary()">确 定</el-button>
+      </span>
+    </el-dialog>
     <div>
       <div class="manage-table">
         <el-table :data="tableData" border style="width: 100%">
@@ -15,7 +55,7 @@
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="132">
             <template v-slot="scope">
-              <el-button type="text" size="small" @click="openEdit()">编辑</el-button>
+              <el-button type="text" size="small" @click="openEdit(scope.row)">编辑</el-button>
               <el-button type="text" size="small" @click="delete1(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -32,21 +72,13 @@
         <div>
           <h3 style="text-align:center;">表单操作</h3>
           <el-button type="primary" @click="getFirstPage()">刷新表单</el-button>
-          <el-button type="primary">添加信息</el-button>
+          <el-button type="primary" @click="addOpen()">添加信息</el-button>
           <el-input style="margin-top: 20px;" v-model="search" placeholder="在此输入搜索条件"></el-input>
           <el-button type="primary" @click="searchByName()">按姓名查询</el-button>
           <el-button type="primary" @click="searchByID()">按ID查询</el-button>
         </div>
       </div>
     </div>
-
-    <el-dialog title="添加薪资记录" :visible.sync="editDialogVisible" width="30%" :before-close="handleClose">
-      <span>这是一段信息</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="editDialogVisible = false">确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -79,11 +111,16 @@
   margin: 5px 10px;
   width: 80%;
 }
+
+.dialog-footer {
+  display: flex;
+  justify-content: center;
+}
 </style>
 
 <script>
 import { request } from '@/utils/request';
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessageBox } from 'element-plus'
 
 export default {
   name: 'ManageView',
@@ -112,9 +149,10 @@ export default {
         "name": "",
         "year": "",
         "month": "",
-        "salary": "",
+        "salary": ""
       },
-      editDialogVisible: true
+      editDialogVisible: false,
+      addDialogVisible: false
     }
   },
   created() {
@@ -173,7 +211,7 @@ export default {
           }
         }
       }
-      // 如果没有找到指定的cookie键，则返回null或任何你指定的默认值  
+      //如果没有找到指定的cookie键，则返回null或任何你指定的默认值  
       return null;
     }, getFirstPage() {
       this.now = 1
@@ -298,8 +336,63 @@ export default {
         })
         .catch(_ => { });
     },
-    openEdit() {
+    openEdit(row) {
       this.editDialogVisible = true
+      this.editForm.id = row.id
+      this.editForm.name = row.name
+      this.editForm.year = row.year
+      this.editForm.month = row.month
+      this.editForm.salary = row.salary
+    }, updateSalary() {
+      request.post("/salary/update", this.editForm, {
+        headers: {
+          "satoken": this.getCookie("satoken")
+        }
+      }).then(res => {
+        if (res.code == 200) {
+          this.$message({
+            type: 'success',
+            message: '修改成功!',
+          })
+          this.getFirstPage()
+          this.editDialogVisible = false
+        }else{
+          this.$message({
+            type: 'error',
+            message: '修改失败!',
+          })
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },addOpen(){
+      this.addDialogVisible = true
+    },addSalary(){
+      request.post("/salary/add", this.addForm, {
+        headers: {
+          "satoken": this.getCookie("satoken")
+        }
+      }).then(res => {
+        if (res.code == 200) {
+          this.$message({
+            type: 'success',
+            message: '添加成功!',
+          })
+          this.getFirstPage()
+          this.addDialogVisible = false
+        }else{
+          this.$message({
+            type: 'error',
+            message: '添加失败!',
+          })
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+      this.addForm.name = ""
+      this.addForm.year = ""
+      this.addForm.month = ""
+      this.addForm.salary = ""
     }
   }
 }

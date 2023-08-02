@@ -135,4 +135,14 @@ public class UserSalaryController {
         return obj;
     }
 
+    @ApiOperation("通过用户名查询员工薪资信息")
+    @GetMapping("/searchByName")
+    public JSON searchByName(@RequestParam String username) {
+        JSONObject obj = JSONUtil.createObj();
+        obj.put("code", 200);
+        obj.put("msg", "查询成功");
+        obj.put("data", userSalaryService.getSumSalaryByUsername(username));
+        return obj;
+    }
+
 }

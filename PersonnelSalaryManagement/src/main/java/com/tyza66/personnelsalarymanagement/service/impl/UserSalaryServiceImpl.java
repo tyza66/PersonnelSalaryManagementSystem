@@ -9,6 +9,7 @@ import com.tyza66.personnelsalarymanagement.pojo.UserSalary;
 import com.tyza66.personnelsalarymanagement.service.UserSalaryService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -66,6 +67,74 @@ public class UserSalaryServiceImpl extends ServiceImpl<UserSalaryMapper, UserSal
         QueryWrapper<UserSalary> userSalaryQueryWrapper = new QueryWrapper<>();
         userSalaryQueryWrapper.like("name", username);
         return baseMapper.selectList(userSalaryQueryWrapper);
+    }
+
+    @Override
+    public BigDecimal getSumSalaryByUsername(String username) {
+        QueryWrapper<UserSalary> userSalaryQueryWrapper = new QueryWrapper<>();
+        userSalaryQueryWrapper.eq("name", username);
+        List<UserSalary> userSalaries = baseMapper.selectList(userSalaryQueryWrapper);
+        BigDecimal sum = new BigDecimal(0);
+        for (UserSalary userSalary : userSalaries) {
+            BigDecimal salary = userSalary.getSalary();
+            if (salary == null) {
+                salary = new BigDecimal(0);
+            }
+            sum = sum.add(salary);
+        }
+        return sum;
+    }
+
+    @Override
+    public BigDecimal getSumSalaryByUsernameAndMonth(String username, Integer month) {
+        QueryWrapper<UserSalary> userSalaryQueryWrapper = new QueryWrapper<>();
+        userSalaryQueryWrapper.eq("name", username);
+        userSalaryQueryWrapper.eq("month", month);
+        List<UserSalary> userSalaries = baseMapper.selectList(userSalaryQueryWrapper);
+        BigDecimal sum = new BigDecimal(0);
+        for (UserSalary userSalary : userSalaries) {
+            BigDecimal salary = userSalary.getSalary();
+            if (salary == null) {
+                salary = new BigDecimal(0);
+            }
+            sum = sum.add(salary);
+        }
+        return sum;
+    }
+
+    @Override
+    public BigDecimal getSumSalaryByUsernameAndYear(String username, Integer year) {
+        QueryWrapper<UserSalary> userSalaryQueryWrapper = new QueryWrapper<>();
+        userSalaryQueryWrapper.eq("name", username);
+        userSalaryQueryWrapper.eq("year", year);
+        List<UserSalary> userSalaries = baseMapper.selectList(userSalaryQueryWrapper);
+        BigDecimal sum = new BigDecimal(0);
+        for (UserSalary userSalary : userSalaries) {
+            BigDecimal salary = userSalary.getSalary();
+            if (salary == null) {
+                salary = new BigDecimal(0);
+            }
+            sum = sum.add(salary);
+        }
+        return sum;
+    }
+
+    @Override
+    public BigDecimal getSalaryByUsernameAndYearAndMonth(String username, Integer year, Integer month) {
+        QueryWrapper<UserSalary> userSalaryQueryWrapper = new QueryWrapper<>();
+        userSalaryQueryWrapper.eq("name", username);
+        userSalaryQueryWrapper.eq("year", year);
+        userSalaryQueryWrapper.eq("month", month);
+        List<UserSalary> userSalaries = baseMapper.selectList(userSalaryQueryWrapper);
+        BigDecimal sum = new BigDecimal(0);
+        for (UserSalary userSalary : userSalaries) {
+            BigDecimal salary = userSalary.getSalary();
+            if (salary == null) {
+                salary = new BigDecimal(0);
+            }
+            sum = sum.add(salary);
+        }
+        return sum;
     }
 
 }
