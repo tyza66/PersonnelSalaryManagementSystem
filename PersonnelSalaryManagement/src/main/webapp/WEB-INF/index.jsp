@@ -52,6 +52,7 @@
                 <el-button @click="goLoginP()">前往登录界面</el-button>
                 <el-button @click="goRegisterP()">前往注册界面</el-button>
                 <el-button @click="goSearchP()">前往员工查工资界面</el-button>
+                <el-button @click="logoutP()">退出登录</el-button>
 
                 <br/><br/>
                 jsp版本：
@@ -136,6 +137,15 @@
                 window.location.href = "http://localhost:9090/pure/register";
             },goSearchP(){
                 window.location.href = "http://localhost:9090/pure/search";
+            },logoutP(){
+                var that = this;
+                axios.get("/pure/logout").then(res=>{
+
+                })
+                this.$message({
+                    message: '退出成功',
+                    type: 'success'
+                });
             }
         }
     })

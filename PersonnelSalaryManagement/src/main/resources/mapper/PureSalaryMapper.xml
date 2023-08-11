@@ -3,5 +3,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tyza66.personnelsalarymanagement.mapper.PureSalaryMapper">
 
+    <select id="selectAll" resultType="com.tyza66.personnelsalarymanagement.pojo.UserSalaryEncryption">
+        select *
+        from `user_salary_encryption`
+    </select>
 
+    <select id="selectByName" resultType="com.tyza66.personnelsalarymanagement.pojo.UserSalaryEncryption">
+        select *
+        from `user_salary_encryption` where `name` = #{name}
+    </select>
+
+    <select id="selectById" resultType="com.tyza66.personnelsalarymanagement.pojo.UserSalaryEncryption">
+        select *
+        from `user_salary_encryption`
+        where `id` = #{id}
+    </select>
 </mapper>
