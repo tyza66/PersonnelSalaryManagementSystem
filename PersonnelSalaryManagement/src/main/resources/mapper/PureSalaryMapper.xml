@@ -24,4 +24,13 @@
         from `user_salary_encryption`
         where `id` = #{id}
     </delete>
+    
+    <update id="updateById">
+        update `user_salary_encryption`
+        set `name` = #{name},
+            `year` = #{year},
+            `month` = #{month},
+            `salary` = #{salary}
+        where `id` = #{id}
+    </update>
 </mapper>

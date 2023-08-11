@@ -67,7 +67,10 @@ public class PureUserSalaryImpl implements UserSalaryService {
 
     @Override
     public Boolean updateUserSalary(UserSalary userSalary) {
-        return null;
+        //首先将传过来的信息加密
+        UserSalaryEncryption infoById = UserSalaryEncryptionUtil.encrypt(userKeyMapper.getByName("公共用").getPublickey(), userSalary);
+        //然后更新
+        return pureSalaryMapper.updateById(infoById) > 0;
     }
 
     @Override

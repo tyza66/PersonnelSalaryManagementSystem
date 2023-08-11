@@ -20,4 +20,6 @@ public interface PureSalaryMapper{
     int insert(UserSalaryEncryption userSalaryEncryption);
 
     int deleteById(int id);
+
+    int updateById(UserSalaryEncryption userSalaryEncryption);
 }

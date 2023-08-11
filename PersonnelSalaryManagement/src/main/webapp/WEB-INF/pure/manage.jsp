@@ -63,6 +63,21 @@
         margin: 0 auto;
         margin-top: 50px;
     }
+
+    .menu2 {
+        position: fixed;
+        top: 100px;
+        right: 0;
+        width: 100px;
+        height: 300px;
+        background-color: #00a0e9;
+    }
+
+    .menu2 h4 {
+        text-align: center;
+        line-height: 50px;
+        color: #fff;
+    }
 </style>
 <div class="head">
     <h1>人员薪资管理系统</h1>
@@ -71,7 +86,7 @@
 <div class="main">
     <div class="menu">
         <h4>功能菜单</h4>
-        <ul>
+        <ul style="list-style: none;">
             <form action="/pure/manage?mode=1" method="post">
                 <li><input style="width: 100%;" type="text" hidden/></li>
                 <li><input style="width: 100%;" type="text" placeholder="姓名" name="xm"/></li>
@@ -90,6 +105,22 @@
             <li></li>
         </ul>
     </div>
+    <div class="menu2">
+        <h4>编辑菜单</h4>
+        <ul style="list-style: none;">
+            <form action="/pure/manage?mode=2" method="post">
+                <li><input style="width: 100%;" type="text" disabled value="" placeholder="待修改ID" name="id1"/></li>
+                <li><input style="width: 100%;" type="text" hidden name="id" value="" placeholder="待修改ID"/></li>
+                <li><input style="width: 100%;" type="text" placeholder="姓名" name="xm"/></li>
+                <li><input style="width: 100%;" type="text" placeholder="年日期" name="nrq"/></li>
+                <li><input style="width: 100%;" type="text" placeholder="月日期" name="yrq"/></li>
+                <li><input style="width: 100%;" type="text" placeholder="薪资" name="xz"/></li>
+                <li>
+                    <button style="width: 100%;">提交修改</button>
+                </li>
+            </form>
+        </ul>
+    </div>
 
     <div class="table-context">
         <table border="1" align="center" style="text-align: center;width: 600px;margin: 0 auto;">
@@ -98,6 +129,7 @@
                 <th>姓名</th>
                 <th>年日期</th>
                 <th>月日期</th>
+                <th>薪资</th>
                 <th>操作</th>
             </tr>
             <%-- <tr>
@@ -124,8 +156,12 @@
                 </td>
                 <td><%=salary.getMonth()%>
                 </td>
+                <td><%=salary.getSalary()%>
+                </td>
                 <td>
-                    <button>编辑</button>
+                    <button onclick="edit1('<%=salary.getId()%>','<%=salary.getName()%>','<%=salary.getYear()%>','<%=salary.getMonth()%>','<%=salary.getSalary()%>')">
+                        编辑
+                    </button>
                     <button onclick="delete1(<%=salary.getId()%>)">删除</button>
                 </td>
             </tr>
@@ -163,10 +199,23 @@
         %>
 
         alert("<%=session.getAttribute("info")%>")
+        clearSearch();
         <%}%>
 
         <%
         session.removeAttribute("delete");
+        %>
+
+        <%
+        if(session.getAttribute("edit")!=null){
+        %>
+
+        alert("<%=session.getAttribute("info")%>")
+        clearSearch();
+        <%}%>
+
+        <%
+        session.removeAttribute("edit");
         %>
 
     }
@@ -189,6 +238,15 @@
 
     function clearSearch() {
         window.location.href = "/pure/manage"
+    }
+
+    function edit1(id, name, year, month, salary) {
+        document.getElementsByName("id1")[0].value = id;
+        document.getElementsByName("id")[0].value = id;
+        document.getElementsByName("xm")[1].value = name;
+        document.getElementsByName("nrq")[1].value = year;
+        document.getElementsByName("yrq")[1].value = month;
+        document.getElementsByName("xz")[1].value = salary;
     }
 </script>
 

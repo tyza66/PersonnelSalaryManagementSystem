@@ -193,12 +193,13 @@ public class PureJspRouterController {
     //管理的Post
     @PostMapping("/manage")
     public String managePost(HttpServletRequest request, HttpSession session,
+                                @RequestParam(required = false, defaultValue = "") String id,
                              @RequestParam(required = false, defaultValue = "") String mode,
                              @RequestParam(required = false, defaultValue = "") String xm,
                              @RequestParam(required = false, defaultValue = "") String nrq,
                              @RequestParam(required = false, defaultValue = "") String yrq,
                              @RequestParam(required = false, defaultValue = "") String xz) {
-        log.info("调用了管理post，mode={}", mode);
+        log.info("调用了管理post，mode={},id={}", mode,id);
         //所有的管理操作都是在已经登录的前提下
         if (session.getAttribute("username") != null) {
             if ((mode != null && mode.equals("1")) && (xm != null && !xm.equals("") && (nrq != null && !nrq.equals("")) && (yrq != null && !yrq.equals("")) && (xz != null && !xz.equals("")))) {
@@ -212,6 +213,19 @@ public class PureJspRouterController {
                     session.setAttribute("info", "添加失败");
                     session.setAttribute("add", "0");
                     log.info("添加失败");
+                }
+            }
+            if((mode != null && mode.equals("2")) && (id!=null&& !id.equals(""))&&(xm != null && !xm.equals("") && (nrq != null && !nrq.equals("")) && (yrq != null && !yrq.equals("")) && (xz != null && !xz.equals("")))){
+                //如果传过来了完整要插入的值 就直接修改
+                Boolean aBoolean = pureUserSalaryImpl.updateUserSalary(new UserSalary(Integer.parseInt(id), xm, new BigDecimal(xz), nrq, yrq));
+                if (aBoolean) {
+                    session.setAttribute("info", "修改成功");
+                    session.setAttribute("edit", "1");
+                    log.info("修改成功");
+                } else {
+                    session.setAttribute("info", "修改失败");
+                    session.setAttribute("edit", "0");
+                    log.info("修改失败");
                 }
             }
         } else {
