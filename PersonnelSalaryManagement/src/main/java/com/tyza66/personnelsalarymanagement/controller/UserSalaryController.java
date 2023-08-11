@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserSalaryController {
 
     @Autowired
+    @Qualifier("userSalaryServiceImpl")
     private UserSalaryService userSalaryService;
 
     @ApiOperation("分页查询员工工资信息")

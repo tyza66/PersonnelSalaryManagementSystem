@@ -7,7 +7,6 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 
 @SpringBootApplication
 @MapperScan("com.tyza66.personnelsalarymanagement.mapper")
-@ServletComponentScan("com.tyza66.personnelsalarymanagement.servlet")
 public class PersonnelSalaryManagementApplication {
 
 	public static void main(String[] args) {

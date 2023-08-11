@@ -47,6 +47,13 @@
                 当前登陆状态：{{ status }}<br/>
 
                 <br/><br/>
+                纯jsp版本：
+                <el-button @click="goManageP()">前往管理界面</el-button>
+                <el-button @click="goLoginP()">前往登录界面</el-button>
+                <el-button @click="goRegisterP()">前往注册界面</el-button>
+                <el-button @click="goSearchP()">前往员工查工资界面</el-button>
+
+                <br/><br/>
                 jsp版本：
                 <el-button @click="goManage()">前往管理界面</el-button>
                 <el-button @click="goLogin()">前往登录界面</el-button>
@@ -121,6 +128,14 @@
                         alert("退出失败");
                     }
                 })
+            },goManageP(){
+                window.location.href = "http://localhost:9090/pure/manage";
+            },goLoginP(){
+                window.location.href = "http://localhost:9090/pure/login";
+            },goRegisterP(){
+                window.location.href = "http://localhost:9090/pure/register";
+            },goSearchP(){
+                window.location.href = "http://localhost:9090/pure/search";
             }
         }
     })

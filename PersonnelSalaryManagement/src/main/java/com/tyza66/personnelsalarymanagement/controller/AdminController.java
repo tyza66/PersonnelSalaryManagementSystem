@@ -9,6 +9,7 @@ import com.tyza66.personnelsalarymanagement.service.AdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
+    @Qualifier("adminServiceImpl")
     private AdminService adminService;
 
     @ApiOperation("管理员登录")

@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ControllerAdvice
 public class ExceptionHandlerController {
 
-    @ExceptionHandler(Exception.class)
+   /* @ExceptionHandler(Exception.class)
     @ResponseBody
     public JSON exceptionHandler(Exception e) {
         JSONObject obj = JSONUtil.createObj();
         obj.set("code","198");
         obj.set("msg",e.getMessage());
         return obj;
-    }
+    }*/
 }
