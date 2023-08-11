@@ -22,6 +22,11 @@ import java.util.List;
 public class UserSalaryServiceImpl extends ServiceImpl<UserSalaryMapper, UserSalary> implements UserSalaryService {
 
     @Override
+    public List<UserSalary> getUserSalary() {
+        return null;
+    }
+
+    @Override
     public List<UserSalary> getUserSalary(int page, int size) {
         QueryWrapper<UserSalary> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("name");

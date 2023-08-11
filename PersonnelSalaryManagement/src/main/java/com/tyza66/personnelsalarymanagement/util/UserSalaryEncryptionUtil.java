@@ -9,7 +9,10 @@ import com.tyza66.personnelsalarymanagement.pojo.UserSalary;
 import com.tyza66.personnelsalarymanagement.pojo.UserSalaryEncryption;
 
 import java.math.BigDecimal;
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Author: tyza66
@@ -18,7 +21,7 @@ import java.util.Arrays;
  **/
 
 public class UserSalaryEncryptionUtil {
-    public static final String sm4key = "f4af68a69bf4fd6e";
+    public static final String sm4key = "5000b4519d0790ef";
 
     //加密
     public static UserSalaryEncryption encrypt(String publicKey, UserSalary data) {
@@ -38,11 +41,28 @@ public class UserSalaryEncryptionUtil {
         SymmetricCrypto sm4 = SmUtil.sm4(sm4key.getBytes());
         UserSalary userSalary = new UserSalary();
         userSalary.setId(data.getId());
-        userSalary.setName(data.getName());
+        userSalary.setName(sm4.decryptStr(data.getName()));
         userSalary.setMonth(sm4.decryptStr(data.getMonth()));
         userSalary.setYear(sm4.decryptStr(data.getYear()));
         SM2 sm2util = SmUtil.sm2(privateKey, null);
         userSalary.setSalary(new BigDecimal(sm2util.decryptStr(data.getSalary(), KeyType.PrivateKey)));
         return userSalary;
+    }
+
+    //批量解密
+    public static List<UserSalary> decrypt(String privateKey, List<UserSalaryEncryption> data) {
+        SymmetricCrypto sm4 = SmUtil.sm4(sm4key.getBytes());
+        SM2 sm2util = SmUtil.sm2(privateKey, null);
+        ArrayList<UserSalary> userSalaries = new ArrayList<UserSalary>();
+        for (UserSalaryEncryption userSalaryEncryption : data) {
+            UserSalary userSalary = new UserSalary();
+            userSalary.setId(userSalaryEncryption.getId());
+            userSalary.setName(sm4.decryptStr(userSalaryEncryption.getName()));
+            userSalary.setMonth(sm4.decryptStr(userSalaryEncryption.getMonth()));
+            userSalary.setYear(sm4.decryptStr(userSalaryEncryption.getYear()));
+            userSalary.setSalary(new BigDecimal(sm2util.decryptStr(userSalaryEncryption.getSalary(), KeyType.PrivateKey)));
+            userSalaries.add(userSalary);
+        }
+        return userSalaries;
     }
 }

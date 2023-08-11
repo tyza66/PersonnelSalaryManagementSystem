@@ -1,7 +1,9 @@
 package com.tyza66.personnelsalarymanagement.controller;
 
 import cn.hutool.crypto.SmUtil;
+import com.tyza66.personnelsalarymanagement.pojo.UserSalary;
 import com.tyza66.personnelsalarymanagement.service.AdminService;
+import com.tyza66.personnelsalarymanagement.service.UserSalaryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -10,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author: tyza66
@@ -29,24 +34,34 @@ public class PureJspRouterController {
     //post请求都使用表单提交的模式直接可以重定向回原来页面（不重定向的话刷新的时候会再次提交post信息，重定向会回到原get请求的界面）
     //每个页面对应一组get和post请求 (每对控制器其实相当于一个Servlet的doService方法)
 
-//相关依赖
+    //相关依赖
     //用户服务
     private AdminService pureAdminService;
 
-//依赖注入
+    //人员薪资服务
+    private UserSalaryService pureUserSalaryImpl;
+
+    //依赖注入
     //注入用户服务
     @Autowired
     @Qualifier("pureAdminServiceImpl")
-    public void setPureAdminService(AdminService pureAdminService){
+    public void setPureAdminService(AdminService pureAdminService) {
         this.pureAdminService = pureAdminService;
     }
 
+    //注入人员薪资服务
+    @Autowired
+    @Qualifier("pureUserSalaryImpl")
+    public void setPureUserSalaryImpl(UserSalaryService pureUserSalaryImpl) {
+        this.pureUserSalaryImpl = pureUserSalaryImpl;
+    }
 
-//先试一下方案是否可行
+
+    //先试一下方案是否可行
     //测试用页面 通过自跳转带参分情况实现同一界面的不同显示
     @GetMapping("/temp")
-    public String temp(HttpServletRequest request, @RequestParam(required = false,defaultValue = "") String info) {
-        if (info==null||info.equals("")) {
+    public String temp(HttpServletRequest request, @RequestParam(required = false, defaultValue = "") String info) {
+        if (info == null || info.equals("")) {
             //如果什么也没传过来 就显示默认的
             request.setAttribute("info", "tyza66");
         } else {
@@ -138,30 +153,59 @@ public class PureJspRouterController {
 
     //管理的Get
     @GetMapping("/manage")
-    public String manage(HttpServletRequest request, HttpSession session,@RequestParam(required = false,defaultValue = "") String key) {
+    public String manage(HttpServletRequest request, HttpSession session, @RequestParam(required = false, defaultValue = "") String key, @RequestParam(required = false, defaultValue = "") String mode) {
+        //检查当前的登陆状态 如果没登陆 在界面中会处理如果登录了 开始拉取表单信息
+        //所有管理的操作都是在已经登陆的前提下
+        if (session.getAttribute("username") != null) {
+            //如果没有传过来key 默认显示全部表单信息
+            if (key == null || key.equals("")) {
+                List<UserSalary> userSalary = pureUserSalaryImpl.getUserSalary();
+                session.setAttribute("userSalary", userSalary);
+            } else {
+                //如果传过来了 就显示传过来的
+                //如果当前的mode是1 那么执行搜索操作
+                if(mode!=null&&mode.equals("1")){
+                    UserSalary userSalaryById = pureUserSalaryImpl.getUserSalaryById(Integer.parseInt(key));
+                    ArrayList<UserSalary> userSalaries = new ArrayList<>();
+                    userSalaries.add(userSalaryById);
+                    session.setAttribute("userSalary", userSalaries);
+                }
+                //如果当前的mode是2 那么执行删除操作
+
+            }
+        }
         return "pure/manage";
     }
 
     //管理的Post
     @PostMapping("/manage")
-    public String managePost(HttpServletRequest request, HttpSession session) {
-        log.info("调用了管理post，");
+    public String managePost(HttpServletRequest request, HttpSession session,
+                             @RequestParam(required = false, defaultValue = "") String mode,
+                             @RequestParam(required = false, defaultValue = "") String xm,
+                             @RequestParam(required = false, defaultValue = "") String nrq,
+                             @RequestParam(required = false, defaultValue = "") String yrq,
+                             @RequestParam(required = false, defaultValue = "") String xz) {
+        log.info("调用了管理post，mode={}", mode);
+        //所有的管理操作都是在已经登录的前提下
+        if (session.getAttribute("username") != null) {
+            if ((mode != null && mode.equals("1")) && (xm != null && !xm.equals("") && (nrq != null && !nrq.equals("")) && (yrq != null && !yrq.equals("")) && (xz != null && !xz.equals("")))) {
+                //如果传过来了完整要插入的值 就直接插入
+                Boolean aBoolean = pureUserSalaryImpl.addUserSalary(new UserSalary(0, xm, new BigDecimal(xz), nrq, yrq));
+                if (aBoolean) {
+                    session.setAttribute("info", "添加成功");
+                    session.setAttribute("add", "1");
+                    log.info("添加成功");
+                } else {
+                    session.setAttribute("info", "添加失败");
+                    session.setAttribute("add", "0");
+                    log.info("添加失败");
+                }
+            }
+        } else {
+            session.setAttribute("info", "请先登录");
+            session.setAttribute("add", "0");
+            log.info("请先登录");
+        }
         return "redirect:/pure/manage";
     }
-
-    //检索的Get
-    @GetMapping("/search")
-    public String search(HttpServletRequest request, HttpSession session) {
-        request.setAttribute("info", "tyza66");
-        return "pure/search";
-    }
-
-    //检索的Post
-    @PostMapping("/search")
-    public String searchPost(HttpServletRequest request, HttpSession session) {
-        log.info("调用了检索post，");
-        return "redirect:/pure/search";
-    }
-
-
 }

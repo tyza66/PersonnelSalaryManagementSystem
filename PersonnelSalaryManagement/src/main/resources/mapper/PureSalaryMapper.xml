@@ -8,14 +8,14 @@
         from `user_salary_encryption`
     </select>
 
-    <select id="selectByName" resultType="com.tyza66.personnelsalarymanagement.pojo.UserSalaryEncryption">
-        select *
-        from `user_salary_encryption` where `name` = #{name}
-    </select>
-
     <select id="selectById" resultType="com.tyza66.personnelsalarymanagement.pojo.UserSalaryEncryption">
         select *
         from `user_salary_encryption`
         where `id` = #{id}
     </select>
+
+    <insert id="insert">
+        INSERT INTO `personnel_information_management`.`user_salary_encryption` (`name`, `year`, `month`, `salary`)
+        VALUES (#{name}, #{year}, #{month}, #{salary})
+    </insert>
 </mapper>

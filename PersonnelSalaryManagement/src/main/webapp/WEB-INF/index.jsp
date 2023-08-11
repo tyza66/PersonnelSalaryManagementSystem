@@ -51,7 +51,6 @@
                 <el-button @click="goManageP()">前往管理界面</el-button>
                 <el-button @click="goLoginP()">前往登录界面</el-button>
                 <el-button @click="goRegisterP()">前往注册界面</el-button>
-                <el-button @click="goSearchP()">前往员工查工资界面</el-button>
                 <el-button @click="logoutP()">退出登录</el-button>
 
                 <br/><br/>

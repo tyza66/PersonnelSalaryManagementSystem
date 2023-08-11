@@ -12,6 +12,8 @@ import java.util.List;
  **/
 
 public interface UserSalaryService {
+    //查询所有
+    List<UserSalary> getUserSalary();
 
     //分页查询所有用户工资信息
     List<UserSalary> getUserSalary(int page, int size);

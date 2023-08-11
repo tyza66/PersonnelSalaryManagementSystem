@@ -14,7 +14,8 @@ public interface PureSalaryMapper{
 
     List<UserSalaryEncryption> selectAll();
 
-    List<UserSalaryEncryption> selectByName(String name);
-
     List<UserSalaryEncryption> selectById(int id);
+
+    //插入
+    int insert(UserSalaryEncryption userSalaryEncryption);
 }

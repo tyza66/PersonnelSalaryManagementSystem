@@ -1,4 +1,5 @@
-<%--
+<%@ page import="com.tyza66.personnelsalarymanagement.pojo.UserSalary" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: tyza66
   Date: 2023/8/10
@@ -32,10 +33,35 @@
         line-height: 50px;
         color: #fff;
     }
-    .main{
+
+    .main {
         width: 100%;
         height: 100%;
         background-color: #f5f5f5;
+        border-top: 1px;
+        overflow: auto;
+    }
+
+    .menu {
+        position: fixed;
+        top: 100px;
+        width: 100px;
+        height: 300px;
+        background-color: #00a0e9;
+    }
+
+    .menu h4 {
+        text-align: center;
+        line-height: 50px;
+        color: #fff;
+    }
+
+    .table-context {
+        width: 700px;
+        background-color: #8c939d;
+        padding: 10px;
+        margin: 0 auto;
+        margin-top: 50px;
     }
 </style>
 <div class="head">
@@ -43,17 +69,110 @@
 </div>
 
 <div class="main">
+    <div class="menu">
+        <h4>功能菜单</h4>
+        <ul>
+            <form action="/pure/manage?mode=1" method="post">
+                <li><input style="width: 100%;" type="text" hidden/></li>
+                <li><input style="width: 100%;" type="text" placeholder="姓名" name="xm"/></li>
+                <li><input style="width: 100%;" type="text" placeholder="年日期" name="nrq"/></li>
+                <li><input style="width: 100%;" type="text" placeholder="月日期" name="yrq"/></li>
+                <li><input style="width: 100%;" type="text" placeholder="薪资" name="xz"/></li>
+                <li>
+                    <button style="width: 100%;">添加薪资信息</button>
+                </li>
+            </form>
+            <li><input style="width: 100%;" type="text" placeholder="搜索信息" id="key"/></li>
+            <li>
+                <button style="width: 100%;" onclick="searchByID()">按ID查找</button>
+            </li>
+            <li></li>
+        </ul>
+    </div>
 
+    <div class="table-context">
+        <table border="1" align="center" style="text-align: center;width: 600px;margin: 0 auto;">
+            <tr>
+                <th>编号</th>
+                <th>姓名</th>
+                <th>年日期</th>
+                <th>月日期</th>
+                <th>操作</th>
+            </tr>
+            <%-- <tr>
+                 <td>1</td>
+                 <td>张三</td>
+                 <td>2021</td>
+                 <td>8</td>
+                 <td>
+                     <button>编辑</button>
+                     <button>删除</button>
+                 </td>
+             </tr>--%>
+            <%
+                if (session.getAttribute("userSalary") != null) {
+                    List<UserSalary> salaries = (List<UserSalary>) session.getAttribute("userSalary");
+                    for (UserSalary salary : salaries) {
+            %>
+            <tr>
+                <td><%=salary.getId()%>
+                </td>
+                <td><%=salary.getName()%>
+                </td>
+                <td><%=salary.getYear()%>
+                </td>
+                <td><%=salary.getMonth()%>
+                </td>
+                <td>
+                    <button>编辑</button>
+                    <button onclick="delete1(<%=salary.getId()%>)">删除</button>
+                </td>
+            </tr>
+            <%
+                    }
+                }
+            %>
+
+        </table>
+    </div>
 </div>
 
 <script>
-    window.onload = function(){
+    window.onload = function () {
         <%if(session.getAttribute("username")==null){%>
         alert("您还未登录，请先登录，一秒后将跳回登录界面")
-        setTimeout(function(){
+        setTimeout(function () {
             window.location.href = "/pure/login"
-        },1000)
+        }, 1000)
         <%}%>
+
+        <%
+        if(session.getAttribute("add")!=null){
+        %>
+
+        alert("<%=session.getAttribute("info")%>")
+        <%}%>
+
+        <%
+        session.removeAttribute("add");
+        %>
+
+    }
+
+    function searchByID() {
+        var id = document.getElementById("key").value;
+        if (id == null || id == "") {
+            alert("请输入要查找的ID")
+        } else {
+            window.location.href = "/pure/manage?mode=1&key=" + id
+        }
+    }
+
+    function delete1(id) {
+        var b = confirm("确定要删除吗？");
+        if (b) {
+            window.location.href = "/pure/manage?mode=2&id=" + id
+        }
     }
 </script>
 
