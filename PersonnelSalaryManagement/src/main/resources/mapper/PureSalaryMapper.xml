@@ -18,4 +18,10 @@
         INSERT INTO `personnel_information_management`.`user_salary_encryption` (`name`, `year`, `month`, `salary`)
         VALUES (#{name}, #{year}, #{month}, #{salary})
     </insert>
+
+    <delete id="deleteById">
+        delete
+        from `user_salary_encryption`
+        where `id` = #{id}
+    </delete>
 </mapper>

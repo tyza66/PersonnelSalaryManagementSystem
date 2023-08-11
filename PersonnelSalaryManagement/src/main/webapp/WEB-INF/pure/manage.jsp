@@ -85,6 +85,7 @@
             <li><input style="width: 100%;" type="text" placeholder="搜索信息" id="key"/></li>
             <li>
                 <button style="width: 100%;" onclick="searchByID()">按ID查找</button>
+                <button style="width: 100%;" onclick="clearSearch()">清除搜索</button>
             </li>
             <li></li>
         </ul>
@@ -157,6 +158,17 @@
         session.removeAttribute("add");
         %>
 
+        <%
+        if(session.getAttribute("delete")!=null){
+        %>
+
+        alert("<%=session.getAttribute("info")%>")
+        <%}%>
+
+        <%
+        session.removeAttribute("delete");
+        %>
+
     }
 
     function searchByID() {
@@ -171,8 +183,12 @@
     function delete1(id) {
         var b = confirm("确定要删除吗？");
         if (b) {
-            window.location.href = "/pure/manage?mode=2&id=" + id
+            window.location.href = "/pure/manage?mode=2&key=" + id
         }
+    }
+
+    function clearSearch() {
+        window.location.href = "/pure/manage"
     }
 </script>
 

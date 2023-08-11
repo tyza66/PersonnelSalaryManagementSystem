@@ -164,14 +164,27 @@ public class PureJspRouterController {
             } else {
                 //如果传过来了 就显示传过来的
                 //如果当前的mode是1 那么执行搜索操作
-                if(mode!=null&&mode.equals("1")){
+                if (mode != null && mode.equals("1")) {
                     UserSalary userSalaryById = pureUserSalaryImpl.getUserSalaryById(Integer.parseInt(key));
                     ArrayList<UserSalary> userSalaries = new ArrayList<>();
                     userSalaries.add(userSalaryById);
                     session.setAttribute("userSalary", userSalaries);
                 }
-                //如果当前的mode是2 那么执行删除操作
-
+                //如果当前的mode是2 那么执行删除操作 并且显示出来删除后的结果
+                //这里这个逻辑写的有点拉跨 跟其他情况组合起来其实可以更简便
+                //先这样吧
+                if (mode != null && mode.equals("2")) {
+                    Boolean aBoolean = pureUserSalaryImpl.deleteUserSalary(Integer.parseInt(key));
+                    if (aBoolean){
+                        session.setAttribute("info", "删除成功");
+                        session.setAttribute("delete","1");
+                    }else{
+                        session.setAttribute("info", "删除失败");
+                        session.setAttribute("delete","0");
+                    }
+                    List<UserSalary> userSalary = pureUserSalaryImpl.getUserSalary();
+                    session.setAttribute("userSalary", userSalary);
+                }
             }
         }
         return "pure/manage";

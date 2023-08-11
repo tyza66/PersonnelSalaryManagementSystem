@@ -28,13 +28,14 @@ public class PureUserSalaryImpl implements UserSalaryService {
 
     @Resource
     private UserKeyMapper userKeyMapper;
+
     //这里是管理员获得所有用户的工资信息 直接使用工具类将全部查到的工资信息全部解解密返回
     @Override
     public List<UserSalary> getUserSalary() {
         List<UserSalaryEncryption> userSalaryEncryptions = pureSalaryMapper.selectAll();
         //如果是在正常使用中可能会有一个用户一个自己的keys的情况 这个演示项目中我就都使用公用的keys了
         UserKeys publicKeys = userKeyMapper.getByName("公共用");
-        return UserSalaryEncryptionUtil.decrypt(publicKeys.getPrivatekey(),userSalaryEncryptions);
+        return UserSalaryEncryptionUtil.decrypt(publicKeys.getPrivatekey(), userSalaryEncryptions);
     }
 
 
@@ -54,14 +55,14 @@ public class PureUserSalaryImpl implements UserSalaryService {
         //如果是在正常使用中可能会有一个用户一个自己的keys的情况 这个演示项目中我就都使用公用的keys了
         UserKeys publicKeys = userKeyMapper.getByName("公共用");
         //先加密
-        UserSalaryEncryption userSalaryEncryption = UserSalaryEncryptionUtil.encrypt(publicKeys.getPublickey(),userSalary);
+        UserSalaryEncryption userSalaryEncryption = UserSalaryEncryptionUtil.encrypt(publicKeys.getPublickey(), userSalary);
         //然后插入
         return pureSalaryMapper.insert(userSalaryEncryption) > 0;
     }
 
     @Override
     public Boolean deleteUserSalary(int id) {
-        return null;
+        return pureSalaryMapper.deleteById(id) > 0;
     }
 
     @Override
@@ -78,7 +79,7 @@ public class PureUserSalaryImpl implements UserSalaryService {
         //将数据解密
         UserKeys publicKeys = userKeyMapper.getByName("公共用");
         //将数据解密返回
-        return UserSalaryEncryptionUtil.decrypt(publicKeys.getPrivatekey(),userSalaryEncryption);
+        return UserSalaryEncryptionUtil.decrypt(publicKeys.getPrivatekey(), userSalaryEncryption);
     }
 
     @Override
