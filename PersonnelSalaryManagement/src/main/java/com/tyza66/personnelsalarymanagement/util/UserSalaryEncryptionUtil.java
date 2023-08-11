@@ -30,7 +30,7 @@ public class UserSalaryEncryptionUtil {
         userSalaryEncryption.setId(data.getId());
         userSalaryEncryption.setName(sm4.encryptHex(data.getName()));
         userSalaryEncryption.setMonth(sm4.encryptHex(data.getMonth()));
-        userSalaryEncryption.setYear(sm4.encryptHex(data.getMonth()));
+        userSalaryEncryption.setYear(sm4.encryptHex(data.getYear()));
         SM2 sm2util = SmUtil.sm2(null, publicKey);
         userSalaryEncryption.setSalary(sm2util.encryptBcd(String.valueOf(data.getSalary()), KeyType.PublicKey));
         return userSalaryEncryption;

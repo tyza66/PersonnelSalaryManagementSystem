@@ -204,6 +204,7 @@ public class PureJspRouterController {
         if (session.getAttribute("username") != null) {
             if ((mode != null && mode.equals("1")) && (xm != null && !xm.equals("") && (nrq != null && !nrq.equals("")) && (yrq != null && !yrq.equals("")) && (xz != null && !xz.equals("")))) {
                 //如果传过来了完整要插入的值 就直接插入
+                log.info("调用了管理post，xm={},nrq={},yrq={},xz={}", xm, nrq, yrq, xz);
                 Boolean aBoolean = pureUserSalaryImpl.addUserSalary(new UserSalary(0, xm, new BigDecimal(xz), nrq, yrq));
                 if (aBoolean) {
                     session.setAttribute("info", "添加成功");
