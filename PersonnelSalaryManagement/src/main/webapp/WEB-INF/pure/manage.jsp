@@ -71,6 +71,7 @@
         width: 100px;
         height: 300px;
         background-color: #00a0e9;
+        display: none;
     }
 
     .menu2 h4 {
@@ -247,6 +248,9 @@
         document.getElementsByName("nrq")[1].value = year;
         document.getElementsByName("yrq")[1].value = month;
         document.getElementsByName("xz")[1].value = salary;
+
+        //点击编辑的时候才让编辑菜单显示出来
+        document.getElementsByClassName("menu2")[0].style.display = "block";
     }
 </script>
 
