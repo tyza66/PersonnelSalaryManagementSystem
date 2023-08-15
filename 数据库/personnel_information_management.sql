@@ -1,0 +1,122 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : mysql
+ Source Server Type    : MySQL
+ Source Server Version : 80033
+ Source Host           : localhost:3306
+ Source Schema         : personnel_information_management
+
+ Target Server Type    : MySQL
+ Target Server Version : 80033
+ File Encoding         : 65001
+
+ Date: 15/08/2023 10:45:03
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for admin
+-- ----------------------------
+DROP TABLE IF EXISTS `admin`;
+CREATE TABLE `admin`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of admin
+-- ----------------------------
+INSERT INTO `admin` VALUES (1, 'admin', 'admin');
+INSERT INTO `admin` VALUES (2, 'tyza66', '7132f04074c4b8955383155cda268c45850b56cc');
+INSERT INTO `admin` VALUES (3, 'tyza666', '7132f04074c4b8955383155cda268c45850b56cc');
+INSERT INTO `admin` VALUES (4, 'tyza667', '7132f04074c4b8955383155cda268c45850b56cc');
+INSERT INTO `admin` VALUES (5, 'guai', '628710de06de43169930644051e300e5862287b3');
+INSERT INTO `admin` VALUES (6, '1', '356a192b7913b04c54574d18c28d46e6395428ab');
+INSERT INTO `admin` VALUES (7, '2', 'da4b9237bacccdf19c0760cab7aec4a8359010b0');
+INSERT INTO `admin` VALUES (8, 'abc', 'a9993e364706816aba3e25717850c26c9cd0d89d');
+INSERT INTO `admin` VALUES (9, 'tyza665', 'e158d9cc6a3ba6a0e42e8c782a81bfecc2d12812');
+INSERT INTO `admin` VALUES (10, 'qwert', '19b58543c85b97c5498edfd89c11c3aa8cb5fe51');
+INSERT INTO `admin` VALUES (11, '123', '123');
+INSERT INTO `admin` VALUES (12, 'hello', 'becbbfaae6548b8bf0cfcad5a27183cd1be6093b1cceccc303d9c61d0a645268');
+
+-- ----------------------------
+-- Table structure for user_keys
+-- ----------------------------
+DROP TABLE IF EXISTS `user_keys`;
+CREATE TABLE `user_keys`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `privatekey` varchar(800) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `publickey` varchar(800) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_keys
+-- ----------------------------
+INSERT INTO `user_keys` VALUES (1, '公共用', '308193020100301306072a8648ce3d020106082a811ccf5501822d047930770201010420faade344e6130008066a8c82eb7d47ac011eddcc372797f405ec9fc4910507f5a00a06082a811ccf5501822da14403420004f5f498a19bb9dfc2d2e52b9db488992fc5e50903b166108796a8cc93c0b5cfe9fd93da6e2fe025dfc1ff8ce6f113511df52b22d4d71f08d7eed6ce89db66a9bf', '3059301306072a8648ce3d020106082a811ccf5501822d03420004f5f498a19bb9dfc2d2e52b9db488992fc5e50903b166108796a8cc93c0b5cfe9fd93da6e2fe025dfc1ff8ce6f113511df52b22d4d71f08d7eed6ce89db66a9bf');
+
+-- ----------------------------
+-- Table structure for user_salary
+-- ----------------------------
+DROP TABLE IF EXISTS `user_salary`;
+CREATE TABLE `user_salary`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `salary` decimal(30, 2) NULL DEFAULT NULL,
+  `year` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `month` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_salary
+-- ----------------------------
+INSERT INTO `user_salary` VALUES (3, '孙达明', 101.96, '2022', '4');
+INSERT INTO `user_salary` VALUES (5, '孙达明', 1022.00, '2022', '7');
+INSERT INTO `user_salary` VALUES (6, '孙达明', 101.00, '2022', '8');
+INSERT INTO `user_salary` VALUES (8, '孙达明', 101.96, '2022', '10');
+INSERT INTO `user_salary` VALUES (9, '孙达明', 101.00, '2022', '11');
+INSERT INTO `user_salary` VALUES (10, '孙达明', 101.00, '2022', '12');
+INSERT INTO `user_salary` VALUES (11, '孙达明', 101.00, '2022', '1');
+INSERT INTO `user_salary` VALUES (12, '孙达明', 101.97, '2022', '2');
+INSERT INTO `user_salary` VALUES (13, '孙小明', 101.00, '2023', '1');
+INSERT INTO `user_salary` VALUES (14, '孙小明', 101.00, '2023', '2');
+INSERT INTO `user_salary` VALUES (15, '孙小明', 101.00, '2023', '3');
+INSERT INTO `user_salary` VALUES (16, '孙达明', 10000.96, '2022', '6');
+INSERT INTO `user_salary` VALUES (17, '孙晓铭', 0.00, '2023', '9');
+INSERT INTO `user_salary` VALUES (19, '1', 4.00, '2', '3');
+INSERT INTO `user_salary` VALUES (20, 'tyza66', 1.00, '1', '1');
+INSERT INTO `user_salary` VALUES (21, '飞秋', 100.33, '2023', '1');
+INSERT INTO `user_salary` VALUES (22, '2222', 222.00, '2222222', '222');
+INSERT INTO `user_salary` VALUES (23, '333', 333.00, '333', '333');
+INSERT INTO `user_salary` VALUES (24, 'zxc', 121.00, '211', '11');
+
+-- ----------------------------
+-- Table structure for user_salary_encryption
+-- ----------------------------
+DROP TABLE IF EXISTS `user_salary_encryption`;
+CREATE TABLE `user_salary_encryption`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `year` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `month` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `salary` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_salary_encryption
+-- ----------------------------
+INSERT INTO `user_salary_encryption` VALUES (3, '8d7a0fa4995b5e86f3653e3525d47605', '8013438bb7d8a8cbeebe2a8814aaab77', '8013438bb7d8a8cbeebe2a8814aaab77', '0461F7289CAF82D377E5EA332D7CFF5B26B1A439DBD38D88B9C84CCF76EB89A5523BF91F6F9C915CDCE57FA8A077AC472BFE8DD65D0E64AC75051790A3A0F3168035CC2584AB35E831574B3821212F446FFA08AFE2A16E7FD4BD6119A25B85ABF9CD02C8EFA3');
+INSERT INTO `user_salary_encryption` VALUES (4, '82d6e393086399a9a77760478a272720', '8779feb3e04ac3291831661908f7a9ff', '8779feb3e04ac3291831661908f7a9ff', '04D7A0FD91893C632B2CA748D3DF9FD020ADFB79BAF9043CD064DAB022C56CD56600A94D28AF66BDDFA891E268D756E7D024DC57E4E6B76172179EA103F91433C9866D30F207273762DB6D9C5EEB3ABE19209BECC15AAC96283818DF91D2A13892B6A1FA8013CC');
+INSERT INTO `user_salary_encryption` VALUES (5, '571b5b342348efbbc2a5f0a9af64a7ec', 'abac44540b0b8c7f720d3b58f969c49a', 'abac44540b0b8c7f720d3b58f969c49a', '04C6581694B86DD05A59FD70441246350C27355B2E01F071EAA7E64FD04C363FC4FEA3960744ED9B1C3DFFECFA8D22E5F3DD558C5B1F111F368AD1324C7FD925EA5E6BE37D1CB58591A20EB91D740956C9C185D86F8BA83697096FF41AF2F77445A3481086061A');
+INSERT INTO `user_salary_encryption` VALUES (6, 'c1c9d51612b5cac629ef5761229b4ca8', 'abac44540b0b8c7f720d3b58f969c49a', 'abac44540b0b8c7f720d3b58f969c49a', '04BA4E3D425238765A78D32D627159445E7CA1CD41B3C29DCC3D42FC006E445E69812C34CB33C76DB90D7F06AF0581D5C4F0A466E5A5E4D3433BC1088318BE03C9B618752F45E6B64DC1372DF467690C29DD4BA3954D7E7EBBF418E64CA727C5807BCB');
+INSERT INTO `user_salary_encryption` VALUES (7, '1275654a270b3ed297a24c970805dc36', '416963264af68077cb9a928b72ee7142', 'abac44540b0b8c7f720d3b58f969c49a', '04BF87178BC1674FA1B58287B1CD4F248D19237CB84FAAC0731CE88A47E2FAD4BC639DC7A03B46A49DE665B87F3C4B7C1B9566D0097007BCE13169D1EC3C1463FA9532875C8C8C5A45686A08A4B98AC411705B6258A6EE753E54220BB6B97D97F1C21A95FA');
+
+SET FOREIGN_KEY_CHECKS = 1;
